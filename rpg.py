@@ -1,8 +1,9 @@
 import random
 import time
-game = False
+game = True
 over = False
 mapp = True
+enemies_defeated = 0
 HERO = {
     'Name': '',
     'Health':100,
@@ -44,73 +45,73 @@ DAMAGE_ENEMY = ENEMY['Inventory']['Бейджик'] + ENEMY["Base damage"]
 
 
 
-MAP = [
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-]
-counter_hero = 0
-counter_enemies = 0
-while True:
-    while counter_hero != 1 and counter_enemies != 3:
-        for y in range(5):
-            for x in range(5):
-                if random.randint(1,50) in [10,25,50,20,30,35]:
-                    if random.randint(0,1) == 1:
-                        if counter_hero < 1:
-                            MAP[y][x] = HERO['Model']
-                            HERO['Position'] = [y,x]
-                            counter_hero += 1
-                    else:
-                        if counter_enemies < 4:
-                            MAP[y][x] = ENEMY['Model']
-                            ENEMY['Pos'] = [y,x]
-                            counter_enemies += 1
+# MAP = [
+#     [0,0,0,0,0],
+#     [0,0,0,0,0],
+#     [0,0,0,0,0],
+#     [0,0,0,0,0],
+#     [0,0,0,0,0],
+# ]
+# counter_hero = 0
+# counter_enemies = 0
+# while True:
+#     while counter_hero != 1 and counter_enemies != 3:
+#         for y in range(5):
+#             for x in range(5):
+#                 if random.randint(1,50) in [10,25,50,20,30,35]:
+#                     if random.randint(0,1) == 1:
+#                         if counter_hero < 1:
+#                             MAP[y][x] = HERO['Model']
+#                             HERO['Position'] = [y,x]
+#                             counter_hero += 1
+#                     else:
+#                         if counter_enemies < 4:
+#                             MAP[y][x] = ENEMY['Model']
+#                             ENEMY['Pos'] = [y,x]
+#                             counter_enemies += 1
 
-    while mapp == True:
+#     while mapp == True:
 
-        for i in MAP:
-            print('\n')
-            for j in i:
-                print(''.join(str(j)), end = '\t')
+#         for i in MAP:
+#             print('\n')
+#             for j in i:
+#                 print(''.join(str(j)), end = '\t')
 
-        move = input("Выберите действие \n 1)Сходить направо \n 2)Сходить налево \n 3)Сходить вверх \n 4)Сходить вниз\n ->")
-        if move =='1':
-            temp = HERO['Position']
-            if temp[1] < 4:
-                MAP[temp[0]][temp[1]] = 0
-                MAP[temp[0]][ temp[1]+1] = HERO['Model']
-                HERO['Position'] = [temp[0],temp[1]+1]
-        elif move == '2':
+#         move = input("Выберите действие \n 1)Сходить направо \n 2)Сходить налево \n 3)Сходить вверх \n 4)Сходить вниз\n ->")
+#         if move =='1':
+#             temp = HERO['Position']
+#             if temp[1] < 4:
+#                 MAP[temp[0]][temp[1]] = 0
+#                 MAP[temp[0]][ temp[1]+1] = HERO['Model']
+#                 HERO['Position'] = [temp[0],temp[1]+1]
+#         elif move == '2':
 
-            temp = HERO['Position']
-            if temp[1] > 0:
-                MAP[temp[0]][temp[1]] = 0
-                MAP[temp[0]][temp[1] - 1] = HERO['Model']
-                HERO['Position'] = [temp[0], temp[1]- 1]
-        elif move == '3':
-            temp = HERO['Position']
-            if temp[0] > 0:
-                MAP[temp[0]][temp[1]] = 0
-                MAP[temp[0] - 1][temp[1]] = HERO['Model']
-                HERO['Position'] = [temp[0] - 1, temp[1]]
-        elif move == '4':
-            temp = HERO['Position']
-            if temp[0] < 4:
-                MAP[temp[0]][temp[1]] = 0
-                MAP[temp[0] + 1][temp[1]] = HERO['Model']
-                HERO['Position'] = [temp[0] + 1, temp[1]]
-    hero_pos = HERO['Position']
-    radar = ENEMY['Pos']
-    print(radar)
-    print(HERO['Position'])
-    if [radar[0]+1, radar[1]] == [hero_pos[0], hero_pos[1]]:
-        mapp == False
-        game == True
+#             temp = HERO['Position']
+#             if temp[1] > 0:
+#                 MAP[temp[0]][temp[1]] = 0
+#                 MAP[temp[0]][temp[1] - 1] = HERO['Model']
+#                 HERO['Position'] = [temp[0], temp[1]- 1]
+#         elif move == '3':
+#             temp = HERO['Position']
+#             if temp[0] > 0:
+#                 MAP[temp[0]][temp[1]] = 0
+#                 MAP[temp[0] - 1][temp[1]] = HERO['Model']
+#                 HERO['Position'] = [temp[0] - 1, temp[1]]
+#         elif move == '4':
+#             temp = HERO['Position']
+#             if temp[0] < 4:
+#                 MAP[temp[0]][temp[1]] = 0
+#                 MAP[temp[0] + 1][temp[1]] = HERO['Model']
+#                 HERO['Position'] = [temp[0] + 1, temp[1]]
+#     hero_pos = HERO['Position']
+#     radar = ENEMY['Pos']
+#     print(radar)
+#     print(HERO['Position'])
+#     if [radar[0]+1, radar[1]] == [hero_pos[0], hero_pos[1]]:
+#         mapp == False
+#         game == True
 
-    while game == True:
+while game == True:
         HERO['Luck'] = random.randint(0, 6)
         ENEMY["Luck"] = random.randint(0, 6)
         if random.randint(1, 6) in [2, 6, 1]:
@@ -151,14 +152,25 @@ while True:
             print('Вы проиграли')
             game = False
             over = True
+            print("Вы победили "+str(enemies_defeated)+" врагов")
 
         else:
             pass
         if ENEMY["Health"] <= 0:
             print('Вы победили!')
-            game = False
-            over = True
-            mapp = True
+            enemies_defeated += 1
+            HERO['Inventory']["Health Flask Count"] += 3 + enemies_defeated
+            if HERO['Health'] <= 50:
+                HERO['Health'] = random.randint(40,60)
+            ENEMY['Inventory']["Health Flask Count"] = 2
+            ENEMY['Health'] = 125
+            cont = input("Хотите продолжить?(да/нет)")
+            if cont == "да":
+                pass
+            else:
+                game == False
+                print("Вы победили "+str(enemies_defeated)+" врагов")
+            
         else:
             pass
 
